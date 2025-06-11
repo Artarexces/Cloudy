@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import Login from './components/Login'
 import Register from './components/Register'
+import Weather from './components/Weather'
 
 
 const App = () => { 
@@ -9,9 +10,9 @@ const App = () => {
   const [view, setView] = useState('login')
   const [token, setToken] = useState(localStorage.getItem('token') || null)
 
+//  CONTROLADORES FETCH  
 
 //  Funcion de logeo manual
-
   const handleLogin = async ( username, password ) => {
     try {
       const res = await fetch('', {
@@ -30,8 +31,8 @@ const App = () => {
     }
   };
 
-//  Funcion de deslogeo manual
 
+//  Funcion de deslogeo manual
   const heandleLogout = async ( ) => {
     fetch ('', {
       method: 'POST',
@@ -46,8 +47,8 @@ const App = () => {
     });
   };
 
-//  Funcion de registro manual
 
+//  Funcion de registro manual
   const handleRegister = async (username, password) => {
     try {
       const res = await fetch('', {
@@ -67,9 +68,24 @@ const App = () => {
     setView('login')
   }
 
-  return (
-    <div>App</div>
-  )
+return (
+  <>
+    {view === 'login' && (
+      <Login
+        onLogin={handleLogin} 
+        switchToRegister={() => setView('Register')}
+      />
+    )}
+
+    {view === 'register' && (
+      <Register switchToLogin={()=> setView('Login')}/>
+    )}
+
+    {/* {view === 'weather' && token && (
+      <Weather token={token} logout={heandleLogout}/>
+    )} */}
+  </>
+  );
 }
 
 export default App

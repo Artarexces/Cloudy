@@ -51,7 +51,7 @@ const Login = ({ onLogin ,switchToRegister }) => {
             <button type="submit">Iniciar sesión</button>
         </form>
         <p>
-            ¿No tienes cuenta?,Registrate!{' '}
+            ¿No tienes cuenta? Registrate{' '}
             <button onClick={switchToRegister}>Registrate</button>
         </p>
     </div>
