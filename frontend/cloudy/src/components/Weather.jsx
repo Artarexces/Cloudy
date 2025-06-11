@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { gsap } from 'gsap'
 
 const Weather = ({token, logout}) => {

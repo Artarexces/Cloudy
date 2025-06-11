@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Login from './components/Login'
 import Register from './components/Register'
 import Weather from './components/Weather'
+import './styles.css'
 
 
 const App = () => { 
@@ -73,12 +74,12 @@ return (
     {view === 'login' && (
       <Login
         onLogin={handleLogin} 
-        switchToRegister={() => setView('Register')}
+        switchToRegister={() => setView('register')}
       />
     )}
 
     {view === 'register' && (
-      <Register switchToLogin={()=> setView('Login')}/>
+      <Register switchToLogin={()=> setView('login')}/>
     )}
 
     {view === 'weather' && token && (

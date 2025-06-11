@@ -37,6 +37,8 @@ const Login = ({ onLogin ,switchToRegister }) => {
                 <input 
                 type="text"
                 value={username}
+                required
+                className='input-field'
                 onChange={(e) => setUsername(e.target.value)}
                 />
             </div>
@@ -45,14 +47,16 @@ const Login = ({ onLogin ,switchToRegister }) => {
                 <input 
                 type="password"
                 value={password}
+                required
+                className='input-field'
                 onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <button type="submit">Iniciar sesión</button>
+            <button type="submit" className='btn-primary'>Iniciar sesión</button>
         </form>
-        <p>
+        <p className='text-link'>
             ¿No tienes cuenta? Registrate{' '}
-            <button onClick={switchToRegister}>Registrate</button>
+            <span onClick={switchToRegister}>Registrate</span>
         </p>
     </div>
 </div>
