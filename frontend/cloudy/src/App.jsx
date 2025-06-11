@@ -81,9 +81,9 @@ return (
       <Register switchToLogin={()=> setView('Login')}/>
     )}
 
-    {/* {view === 'weather' && token && (
+    {view === 'weather' && token && (
       <Weather token={token} logout={heandleLogout}/>
-    )} */}
+    )} 
   </>
   );
 }

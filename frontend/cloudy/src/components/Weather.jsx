@@ -237,6 +237,41 @@ const Weather = ({token, logout}) => {
         </div>
 
         {/* PRONOSTICO SEMANAL */}
+        <div className="week-forecast-container">
+            <div className="week-forecast-grid">
+                {forecast.map((day, idx)=>{
+                    const date = new Date(day.dt * 1000);
+                    const dayLabel = date.toLocaleDateString('en-US', {
+                        weekday: 'short',
+                    });
+                    const iconCode = day.weather[0].icon;
+                    const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+
+                    return (
+                    <div 
+                        className="forecas-card"
+                        key={idx}
+                        ref={(el) => (weekRef.current[idx] = el)}
+                        >
+                        <div className="day-label">{dayLabel}</div>
+                        <div className="icon-small" style={{backgroundImage:`url(${iconUrl})`,}}></div>
+                        <div className="temp-range-small">
+                            {Math.round(day.temp.min)} / {Math.round(day.temp.max)}
+                        </div>
+                        <div className="details-small">
+                            <span>
+                                {day.weather[0].main === 'Rain'
+                                  ? `${Math.round(day.pop *100)}%`
+                                  : '0%'}{' '}
+                                💧
+                            </span>
+                            <span>{`${Math.round(day.wind_speed)} km/s`}</span>
+                        </div>
+                    </div>
+                    )
+                })}
+            </div>
+        </div>
     </div>
   )
 }
