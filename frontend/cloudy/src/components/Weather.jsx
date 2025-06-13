@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { gsap } from 'gsap'
 
-const Weather = ({token, logout}) => {
+const Weather = ({ apiBaseUrl, owmKey, token, logout }) => {
     const [city, setCity] = useState('');
     const [weatherData, setWeatherData] = useState(null);
     const [forecast, setForecast] = useState([]);
@@ -71,9 +71,13 @@ const Weather = ({token, logout}) => {
         if(!city) return; 
 
         try {
-            const res = await fetch(`http://localhost:8000/api/weather/?city=${city}`, {
-                headers:{ Authorization: 'Token', token},
-            });
+            const res = await fetch(`${apiBaseUrl}/weather/?city=${city}&appid=${owmKey}`, 
+                {
+                headers: { 
+                    Authorization: 'Token '+ token,
+                },
+              }
+            )   
             if(!res.ok) throw new Error('Ciudad no encontrada')
             const data = await res.json();
             setWeatherData({ current: data.current, cityName: city})
