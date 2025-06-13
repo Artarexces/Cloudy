@@ -71,7 +71,7 @@ const Weather = ({token, logout}) => {
         if(!city) return; 
 
         try {
-            const res = await fetch('', {
+            const res = await fetch(`http://localhost:8000/api/weather/?city=${city}`, {
                 headers:{ Authorization: 'Token', token},
             });
             if(!res.ok) throw new Error('Ciudad no encontrada')
@@ -114,7 +114,7 @@ const Weather = ({token, logout}) => {
 
     const { current, cityName } = weatherData;
 
-    return (
+return (
     <div ref={containerRef} className="weather-container">
         <div className="background-effect">
             <div className="cloud cloud-1"></div>

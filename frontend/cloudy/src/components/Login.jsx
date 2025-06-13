@@ -27,7 +27,7 @@ const Login = ({ onLogin ,switchToRegister }) => {
             );
         }
     };
-    return (
+return (
 <div className="app-container">
     <div ref={formRef} className='form-container'>
         <h2>Iniciar sesión</h2>

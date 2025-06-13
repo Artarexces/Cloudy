@@ -11,12 +11,20 @@ const App = () => {
   const [view, setView] = useState('login')
   const [token, setToken] = useState(localStorage.getItem('token') || null)
 
+// META ENV 
+
+const API = import.meta.env.VITE_API_BASE_URL;
+const OWM_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
+
+
+
 //  CONTROLADORES FETCH  
 
 //  Funcion de logeo manual
   const handleLogin = async ( username, password ) => {
     try {
-      const res = await fetch('', {
+      const res = await fetch(`${API}/login/`, {
         method: 'POST',
         headers:{ 'Content-Type' : 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -34,25 +42,29 @@ const App = () => {
 
 
 //  Funcion de deslogeo manual
-  const heandleLogout = async ( ) => {
-    fetch ('', {
+  const handleLogout = async ( ) => {
+    try {
+    await fetch(`${API}/logout/`, {
       method: 'POST',
       headers: {
-        'Content-Type' : 'application/json',
-        Authorization: 'Token', token        
-      }
-    }).finally (() => { 
-      localStorage.removeItem('token');
+        'Content-Type': 'application/json',
+        Authorization: 'Token ' + token,
+      },
+    })      
+    } catch (error) {
+      console.error('Error al deslogearse:', error)
+    } finally {
+      localStorage.removeItem('token')
       setToken(null)
       setView('login')
-    });
+    }
   };
 
 
 //  Funcion de registro manual
   const handleRegister = async (username, password) => {
     try {
-      const res = await fetch('', {
+      const res = await fetch(`${API}/register/`, {
         method:'POST',
         headers: { 'Content-Type' : 'application/json'},
         body: JSON.stringify({username, password})
@@ -79,11 +91,18 @@ return (
     )}
 
     {view === 'register' && (
-      <Register switchToLogin={()=> setView('login')}/>
+      <Register
+      onRegister={handleRegister} 
+      switchToLogin={()=> setView('login')}/>
     )}
 
     {view === 'weather' && token && (
-      <Weather token={token} logout={heandleLogout}/>
+      <Weather
+          apiBaseUrl={API}
+          owmKey={OWM_KEY}
+          token={token}
+          logout={handleLogout}
+      />
     )} 
   </>
   );
