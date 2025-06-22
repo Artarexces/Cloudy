@@ -77,7 +77,6 @@ def weather(request):
         'daily': data.get('daily', [])
     })
     
-    
 
 # Vista de historial
 
