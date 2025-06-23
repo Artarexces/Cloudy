@@ -14,7 +14,7 @@ const App = () => {
 // META ENV 
 
 const API = import.meta.env.VITE_API_BASE_URL;
-const OWM_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
 
 
 
@@ -99,7 +99,6 @@ return (
     {view === 'weather' && token && (
       <Weather
           apiBaseUrl={API}
-          owmKey={OWM_KEY}
           token={token}
           logout={handleLogout}
       />

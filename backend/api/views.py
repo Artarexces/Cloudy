@@ -56,26 +56,20 @@ def weather(request):
     city = request.query_params.get('city')
     if not city: 
         return Response({'error': 'Ciudad no especificada'}, status=400)
-    api_key = settings.OWM_API_KEY
-    geo = requests.get(
-        f'https://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={api_key}'
-    )
-    if geo.status_code != 200 or not geo.json():
-        return Response({'error', 'Ciudad no encontrada.'}, status=404)
-    lat, lon = geo.json()[0]['lat'], geo.json()[0]['lon']
-    weather_res = requests.get(
-        f'https://api.openweathermap.org/data/2.5/onecall'
-        f'?lat={lat}&lon={lon}&exclude=minutely,hourly,alerts'
-        f'&units=metric&appid={api_key}'
-    )
-    if weather_res.status_code != 200:
-        return Response({'error': 'Error obteniendo el clima.'}, status=500)
-    data = weather_res.json()
+    api_key = settings.WEATHERAPI_KEY
+    url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={city}&days=7&aqi=no&alerts=no"
+    res = requests.get(url)
+    if res.status_code != 200:
+        return Response({'error': 'Error obteniendo clima.'}, status=res.status_code)
+    data = res.json()
+
     History.objects.create(user=request.user, city=city)
     return Response({
         'current': data.get('current', {}),
-        'daily': data.get('daily', [])
+        'forecast': data.get('forecast', {}).get('forecastday', []),
+        'location': data.get('location', {}),
     })
+
     
 
 # Vista de historial

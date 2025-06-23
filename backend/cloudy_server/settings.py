@@ -111,7 +111,7 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 
-OWM_API_KEY = config('OWM_API_KEY')
+WEATHERAPI_KEY = config('OWM_API_KEY')
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

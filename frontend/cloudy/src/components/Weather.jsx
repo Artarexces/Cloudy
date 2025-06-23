@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { gsap } from 'gsap'
 
-const Weather = ({ apiBaseUrl, owmKey, token, logout }) => {
+const Weather = ({ apiBaseUrl, token, logout }) => {
     const [city, setCity] = useState('');
     const [weatherData, setWeatherData] = useState(null);
     const [forecast, setForecast] = useState([]);
