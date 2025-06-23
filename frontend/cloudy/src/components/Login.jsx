@@ -28,35 +28,35 @@ const Login = ({ onLogin ,switchToRegister }) => {
         }
     };
 return (
-<div className="app-container">
-    <div ref={formRef} className='form-container'>
-        <h2>Iniciar sesión</h2>
-        <form onSubmit={handleSubmit}>
+<div className='min-h-screen flex items-center justify-center bg-gray-900'>
+    <div ref={formRef} className='bg-gray-800 p-8 rounded-2xl shadow-2xl w-80'>
+        <h2 className='text-3xl text-gray-100 font-semibold mb-6 text-center'>Iniciar sesión</h2>
+        <form onSubmit={handleSubmit} className='space-y-4'>
             <div>
-                <label>Usuario:</label>
+                <label className='block text-gray-400 mb-1'>Usuario:</label>
                 <input 
                 type="text"
                 value={username}
                 required
-                className='input-field'
+                className='w-full px-4 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500'
                 onChange={(e) => setUsername(e.target.value)}
                 />
             </div>
             <div>
-                <label>Contraseña</label>
+                <label className='block text-gray-400 mb-1'>Contraseña</label>
                 <input 
                 type="password"
                 value={password}
                 required
-                className='input-field'
+                className='w-full px-4 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500'
                 onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <button type="submit" className='btn-primary'>Iniciar sesión</button>
+            <button type="submit" className='w-full py-2 bg-blue-600 rounded-4xl hover:bg-blue-700 text-white font-medium transition'>Iniciar sesión</button>
         </form>
-        <p className='text-link'>
+        <p className='mt-4 text-center text-gray-400'>
             ¿No tienes cuenta? Registrate{' '}
-            <span onClick={switchToRegister}>Registrate</span>
+            <span onClick={switchToRegister} className='text-blue-400 hover:underline cursor-pointer' >Registrate</span>
         </p>
     </div>
 </div>

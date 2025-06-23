@@ -32,7 +32,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
 
     useEffect (() => {
         if(!weatherData) return;
-        const letters = containerRef.current.querySelectorAll('.bienvenida span')
+        const letters = containerRef.current.querySelectorAll('.bienvenida')
         gsap.fromTo(
             letters,
             {opacity: 0, y: 20},
@@ -62,7 +62,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' },
         )
-    })
+    }, [forecast])
 
 //  Fetchs de clima (Actual + daily)
 
@@ -78,203 +78,124 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
                 },
               });   
             if(!res.ok) throw new Error('Ciudad no encontrada')
-            const data = await res.json();
-            setWeatherData({ current: data.current, cityName: city})
-            setForecast(data.daily.slice(0,7));
+            const { current, forecast: fc, location } = await res.json()
+            setWeatherData({ ...current, name: location.name })
+            setForecast(fc)
         } catch (error) {
             gsap.fromTo(
-                containerRef.current.querySelector('.city-input'),
+                containerRef.current.querySelector('input'),
                 { x: -8 },
                 { x: 8, duration: 0.08, repeat: 4, yoyo: true, ease: 'power1.inOut'},
             );
         }
     };
 
-    if (!weatherData) {
-        return (
-            <div ref={containerRef} className="weather-container">
-                <div className="background-effect">
-                    <div className="cloud cloud-1"></div>
-                    <div className="cloud cloud-2"></div>
-                    <div className="cloud cloud-3"></div>
-                </div>
+  if (!weatherData) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex flex-col items-center p-6 relative" ref={containerRef}>
+        <div className="cloud cloud-1 absolute bg-white/5 rounded-full w-48 h-16 top-10 left-0" />
+        <div className="cloud cloud-2 absolute bg-white/5 rounded-full w-36 h-12 top-32 left-0" />
+        <div className="cloud cloud-3 absolute bg-white/5 rounded-full w-44 h-14 top-52 left-0" />
 
-                <button className="logout-btn" onClick={logout}>Cerrar sesión</button>
+        <button
+          onClick={logout}
+          className="self-end mb-4 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300"
+        >
+          Cerrar sesión
+        </button>
 
-                <form className="search-form" onSubmit={fetchWeather}>
-                    <input 
-                    type="text"
-                    placeholder='Ingresa una ciudad'
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    className='city-input'
-                     />
-                    <button type='submit' className="btn-primary">Buscar🔍</button>
-                </form>
-            </div> 
-        );
-    }
+        <form onSubmit={fetchWeather} className="flex gap-2 w-full max-w-md">
+          <input
+            className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Ingresa una ciudad"
+            value={city}
+            onChange={e => setCity(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+          >
+            🔍
+          </button>
+        </form>
+      </div>
+    )
+  }
 
-    const { current, cityName } = weatherData;
+  const {name, temp_c, feelslike_c, humidity, wind_kph, pressure_mb, precip_mm} = weatherData
 
-return (
-    <div ref={containerRef} className="weather-container">
-        <div className="background-effect">
-            <div className="cloud cloud-1"></div>
-            <div className="cloud cloud-2"></div>
-            <div className="cloud cloud-3"></div>
-        </div>
-        
-        <button className="logout-btn" onClick={logout}>Cerrar sesión</button>
+  return (
+    <div className='min-h-screen bg-gray-900 flex flex-col items-center p-6' ref={containerRef}>
+        <div className='cloud cloud-1 absolute bg-white/5 rounded-full w-48 h-16 top-10 left-0'/>
+        <div className='cloud cloud-2 absolute bg-white/5 rounded-full w-48 h-16 top-10 left-0'/>
+        <div className='cloud cloud-3 absolute bg-white/5 rounded-full w-48 h-16 top-10 left-0'/>
 
-        <form className='search-form' onSubmit={fetchWeather}>
-            <input 
-                type="text"
-                placeholder='Ingresa otra cuidad'
-                value={city}
-                onChange={(e) => setCity (e.target.value)}
-                className='city-input'
-             />
-             <button type="submit" className='btn-primary'>Buscar🔍</button>
+        <button 
+          onClick={logout} 
+          className='self-end mb-4 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300'
+         >
+          Cerrar sessión
+        </button>
+
+
+        <form onSubmit={fetchWeather} className='flex gap-2 w-full max-w-md mb-6' >
+            <input
+              className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder='Buscar otra ciudad'
+              value={city}
+              onChange={e => setCity(e.target.value)}
+            />
+            <button 
+              type="submit"
+              className='px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg'
+              >
+                🔍
+              </button>
         </form>
 
-        {/* Banner de bienvenida */}
+        {/* Banner bienvenida */}
 
-        <div className="bienvenida">
-            {`Clima en ${cityName}`.split('').map((char, idx) => (
-                <span key={idx} style={{ display: 'inline-block'}}>
-                    {char}
-                </span>
+        <h1 className='bienvenida text-3xl font-semibold text-gray-100 mb-6 inline-flex flex-wrap'>
+            {`${ name }`.split('').map((ch,i)=>(
+                <span key={i} className='inline-block'>{ch}</span>
             ))}
-        </div>
+        </h1>
 
-        {/* GRID SUPERIOR: 6 Metricas */}
-        <div className="metrics-grid">
-            <div className="metric-card" ref={(el) => (cardRef.current[0] = el)}>
-                <div className="metric-header">Temperatura</div>
-                <div className="metric-value">
-                    <span className="icon-sun"></span>
-                    {Math.round(current.temp)}
-                    <span className='unit'>°C</span>
-                </div>
-                <div className="metric-subtext">
-                    punto de rocio {Math.round(current.dew_point)}°C
-                    <br />
-                    se siente como {Math.round(current.feels_like)}°C
-                </div>
-            </div>
+        {/* GRID metricas */}
 
-            {/* Velocidad el viento */}
-            <div className="metric-card" ref={(el) => (cardRef.current[1] = el)}>
-                <div className="metric-header">Velocidad del viento</div>
-                <div className="metric-value">
-                    {Math.round(current.wind_speed)}
-                    <span className='unit'>Km/s</span>
-                </div>
-                <div className="metric-subtext">
-                    Max {Math.round(current.wind_gust || current.wind_speed)} Km/s
-                </div>
-            </div>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl mb-8'>
+          
+         {/* Temperatura */}
+          <div
+            ref={el => (cardRef.current[0] = el)}
+            className='bg-gray-800 p-4 rounded-xl border border-gray-700'
+          >
+            <h2 className='text-gray-400 mb-2'>Temperatura</h2>
+            <p className='text-4xl text-gray-100 font-bold'>{Math.round(temp_c)}°C</p>
+            <p className='text-gray-500'>Se siente como {Math.round(feelslike_c)}°C</p>
+          </div>
 
-            {/* Direccion del viento */}
-            <div className="metric-card" ref={(el) => (cardRef.current[2] = el)}>
-                <div className="metric-header">Dirección del viento</div>
-                <div className="metric-value" style={{fontSize: '24px', justifyContent: 'center'}}>
-                    {current.wind_deg}°{' '}
-                    <span className="unit">
-                        {current.wind_deg >= 337 || current.wind_deg < 23
-                        ? 'N'
-                        : current.wind_deg < 68
-                        ? 'NE'
-                        : current.wind_deg < 113
-                        ? 'E'
-                        : current.wind_deg < 158
-                        ? 'SE'
-                        : current.wind_deg < 203
-                        ? 'S'
-                        : current.wind_deg < 248
-                        ? 'SW'
-                        : current.wind_deg < 293
-                        ? 'W'
-                        : 'NW'}
-                    </span>
-                </div>
-                <div className="metric-subtext">Grados</div>
-            </div>
+            {/* Viento  */}
+          <div
+            ref={el => (cardRef.current[1] = el)}
+            className='bg-gray-800 p-4 rounded-xl border border-gray-700'
+          >
+            <h2 className='text-gray-400 mb-2'>Viento</h2>
+            <p className='text-4xl text-gray-100 font-bold'>{Math.round(wind_kph)}km/h</p>
+            <p className='text-gray-500'>Humedad {humidity}%</p>
+          </div>
 
             {/* Presion */}
-            <div className="metric-card" ref={(el) => (cardRef.current[3] = el)}>
-                <div className="metric-header">Presión</div>
-                <div className="metric-value">
-                    {Math.round(current.pressue / 1.333)}
-                    <span className='unit'>Bar</span>
-                </div>
-                <div className="metric-subtext">
-                    Cambios de presión: {current.pressue_change?.toFixed(2) || '0.00'}
-                </div>
-            </div>
-
-            {/* Precipitaciones */}
-            <div className="metric-card" ref={(el) => (cardRef.current[4] = el)}>
-                <div className="metric-header">Precipitaciones</div>
-                <div className="metric-value">
-                    {current.rain ? current.rain['1h'] : 0}
-                    <span className='unit'>mm/h</span>
-                </div>
-                <div className="metric-subtext">
-                    {current.weather[0].main}
-                </div>
-            </div>
-
-            {/* Humedad */}
-            <div className="metric-card" ref={(el) => (cardRef.current[5] = el)}>
-                <div className="metric-header">Humedad</div>
-                <div className="metric-value">
-                    {current.humidity}
-                    <span className='unit'>%</span>
-                </div>
-                <div className="metric-subtext">
-                    Max {Math.round(current.humidity)}%
-                </div>
-            </div>
+          <div
+            ref={el => (cardRef.current[2] = el)}
+            className='bg-gray-800 p-4 rounded-xl border border-gray-700'
+          >
+            <h2 className='text-gray-400 mb-2'>Presión</h2>
+            <p className='text-4xl text-gray-100 font-bold'>{pressure_mb} mb</p>
+            <p className='text-gray-500'>Precipitación {precip_mm}mm</p>
+          </div>
         </div>
 
-        {/* PRONOSTICO SEMANAL */}
-        <div className="week-forecast-container">
-            <div className="week-forecast-grid">
-                {forecast.map((day, idx)=>{
-                    const date = new Date(day.dt * 1000);
-                    const dayLabel = date.toLocaleDateString('en-US', {
-                        weekday: 'short',
-                    });
-                    const iconCode = day.weather[0].icon;
-                    const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png`
-
-                    return (
-                    <div 
-                        className="forecas-card"
-                        key={idx}
-                        ref={(el) => (weekRef.current[idx] = el)}
-                        >
-                        <div className="day-label">{dayLabel}</div>
-                        <div className="icon-small" style={{backgroundImage:`url(${iconUrl})`,}}></div>
-                        <div className="temp-range-small">
-                            {Math.round(day.temp.min)} / {Math.round(day.temp.max)}
-                        </div>
-                        <div className="details-small">
-                            <span>
-                                {day.weather[0].main === 'Rain'
-                                  ? `${Math.round(day.pop *100)}%`
-                                  : '0%'}{' '}
-                                💧
-                            </span>
-                            <span>{`${Math.round(day.wind_speed)} km/s`}</span>
-                        </div>
-                    </div>
-                    )
-                })}
-            </div>
-        </div>
     </div>
   )
 }
