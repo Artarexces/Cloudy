@@ -3,8 +3,7 @@ import { gsap } from 'gsap'
 
 const Weather = ({ apiBaseUrl, token, logout }) => {
     const [city, setCity] = useState('');
-    const [weatherData, setWeatherData] = useState(null);
-    const [forecast, setForecast] = useState([]);
+    const [data, setData] = useState(null);
     const containerRef = useRef(null);
     const cardRef = useRef([]);
     const weekRef = useRef([]);
@@ -15,54 +14,52 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
     useEffect(()=>{
         const clouds = containerRef.current.querySelectorAll('.cloud');
         clouds.forEach((cloud, i) => {
-            const distance = 200 + Math.random() * 100;
-            const duration = 12 + Math.random() * 6;
             gsap.to(cloud, {
-            x: distance,
-            duration:duration,
+            x: 300 + Math.random() * 100,
+            duration: 15 + Math.random() * 6,
             ease:'none',
             repeat: -1,
             yoyo: true,
             delay: i * 1,
             });
         });
-    })
+    },[])
 
 // Effecto de bienvenida animado
 
     useEffect (() => {
-        if(!weatherData) return;
+        if(!data) return;
         const letters = containerRef.current.querySelectorAll('.bienvenida')
         gsap.fromTo(
             letters,
-            {opacity: 0, y: 20},
-            {opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out'},
+            {opacity: 0, y: 30},
+            {opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out'},
         );
-    }, [weatherData]);
+    }, [data]);
 
 
 //  Animacion metricas del grid 
 
     useEffect(()=> {
-        if(!weatherData) return;
+        if(!data) return;
         gsap.fromTo(
             cardRef.current,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power3.out' },
         );
-    }, [weatherData]);
+    }, [data]);
 
 
-//  Animacion pronostico semanal
+// //  Animacion pronostico semanal
 
-    useEffect(() => {
-        if (weekRef.current.length === 0)
-        gsap.fromTo(
-            weekRef.current, 
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' },
-        )
-    }, [forecast])
+//     useEffect(() => {
+//         if (weekRef.current.length === 0)
+//         gsap.fromTo(
+//             weekRef.current, 
+//             { opacity: 0, y: 20 },
+//             { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' },
+//         )
+//     }, [forecast])
 
 //  Fetchs de clima (Actual + daily)
 
@@ -78,9 +75,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
                 },
               });   
             if(!res.ok) throw new Error('Ciudad no encontrada')
-            const { current, forecast: fc, location } = await res.json()
-            setWeatherData({ ...current, name: location.name })
-            setForecast(fc)
+             setData(await res.json())
         } catch (error) {
             gsap.fromTo(
                 containerRef.current.querySelector('input'),
@@ -90,7 +85,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
         }
     };
 
-  if (!weatherData) {
+  if (!data) {
     return (
       <div className="min-h-screen bg-gray-900 flex flex-col items-center p-6 relative" ref={containerRef}>
         <div className="cloud cloud-1 absolute bg-white/5 rounded-full w-48 h-16 top-10 left-0" />
