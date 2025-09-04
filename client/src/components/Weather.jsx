@@ -86,16 +86,6 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
     })
   }, [data])
 
-// //  Animacion pronostico semanal
-
-//     useEffect(() => {
-//         if (weekRef.current.length === 0)
-//         gsap.fromTo(
-//             weekRef.current, 
-//             { opacity: 0, y: 20 },
-//             { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' },
-//         )
-//     }, [forecast])
 
 //  Fetchs de clima (Actual + daily)
 
@@ -123,28 +113,28 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-gray-900 flex flex-col items-center pt-20 relative" ref={containerRef}>
+<div className="w-full min-h-screen bg-gray-900 flex flex-col items-center p-6 relative overflow-x-hidden" ref={containerRef}>
         <div className="cloud cloud-1 absolute bg-white/10 rounded-full w-48 h-16 top-10 left-0" />
         <div className="cloud cloud-2 absolute bg-white/10 rounded-full w-36 h-12 top-32 left-0" />
         <div className="cloud cloud-3 absolute bg-white/10 rounded-full w-44 h-14 top-52 left-0" />
 
         <button
           onClick={logout}
-          className="self-end mr-8 mb-4 px-2 py-2 bg-green-600 hover:bg-green-800 rounded-lg text-gray-300"
+          className="self-end mr-8 mb-4 px-2 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-gray-300"
         >
           Cerrar sesión
         </button>
 
         <form onSubmit={fetchWeather} className="flex gap-2 mb-8">
           <input
-            className="flex-1 px-4 py-2 bg-[#2a2c38] border border-gray-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#5e9cff]"
+            className="flex-1 px-4 py-2 lg:w-120 md:w-80 sm:w-60 bg-[#2a2c38] border border-gray-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#5e9cff]"
             placeholder="Ingresa una ciudad"
             value={city}
             onChange={e => setCity(e.target.value)}
           />
           <button
             type="submit"
-            className="px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+            className="px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl"
           >
             🔍
           </button>
@@ -157,14 +147,14 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
   const pressureBar = (current.pressure_mb / 1.333).toFixed(2)
 
   return (
-    <div className='min-h-screen bg-gray-900 flex flex-col items-center p-6' ref={containerRef}>
+    <div className='w-full min-h-screen bg-gray-900 flex flex-col items-center p-6 overflow-x-hidden' ref={containerRef}>
         <div className='cloud cloud-1 absolute bg-white/10 rounded-full w-48 h-16 top-10 left-0'/>
         <div className='cloud cloud-2 absolute bg-white/10 rounded-full w-36 h-12 top-32 left-0'/>
         <div className='cloud cloud-3 absolute bg-white/10 rounded-full w-44 h-14 top-52 left-0'/>
 
         <button 
           onClick={logout} 
-          className='self-end mr-8 mb-4 px-2 py-2 bg-green-600 hover:bg-green-800 rounded-lg text-gray-300'
+          className='self-end mr-8 mb-4 px-2 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-gray-300'
          >
           Cerrar sessión
         </button>
@@ -198,7 +188,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
          {/* Temperatura */}
           <div
             ref={el => (cardRef.current[0] = el)}
-            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer hover:border-blue-400'
           >
             <h2 className='text-gray-400 mb-2'>Temperatura</h2>
             <p className='text-5xl text-gray-100 font-bold'>{Math.round(current.temp_c)}°C</p>
@@ -208,7 +198,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
             {/* Viento  */}
           <div
             ref={el => (cardRef.current[1] = el)}
-            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer hover:border-blue-400'
           >
             <h2 className='text-gray-400 mb-2'>Viento</h2>
             <p className='text-4xl text-gray-100 font-bold'>{Math.round(current.wind_kph)}km/h</p>
@@ -218,7 +208,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
             {/* Presion */}
           <div
             ref={el => (cardRef.current[2] = el)}
-            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer hover:border-blue-400'
           >
             <h2 className='text-gray-400 mb-2'>Presión</h2>
             <p className='text-4xl text-gray-100 font-bold'>{pressureBar}</p>
@@ -228,7 +218,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
           {/* Precipitaciones */}
           <div
             ref={el => (cardRef.current[3] = el)}
-            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer hover:border-blue-400'
            >
             <h2 className='text-gray-400 mb-2'>Precipitacion</h2>
             <div className='text-5xl font-bold text-[#5e9cff]'>{current.precip_mm || 0}</div>
@@ -238,7 +228,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
           {/* Humedad */}
           <div
             ref={el => (cardRef.current[4] = el)}
-            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer hover:border-blue-400'
            >
             <h2 className='text-gray-400 mb-2'>Humedad</h2>
             <div className='text-5xl font-bold text-[#5e9cff]'>{current.humidity}</div>
@@ -254,7 +244,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
             <div
               key={i}
               ref={el => (weekRef.current[i] = el)}
-              className='bg-gray-800 border border-gray-700 rounded-lg p-3 text-center'
+              className='bg-gray-800 border border-gray-700 rounded-lg p-3 text-center cursor-pointer hover:border-blue-400'
             >
               <p className='text-gray-100 font-semibold mb-1'>
                 {new Date(day.date).toLocaleDateString('en-US', {weekday: 'short'})}
