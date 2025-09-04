@@ -38,17 +38,53 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
     }, [data]);
 
 
-//  Animacion metricas del grid 
+    
+    // useEffect(()=> {
+      //     if(!data) return;
+      //     gsap.fromTo(
+        //         cardRef.current,
+        //         { opacity: 0, y: 30 },
+        //         { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power3.out' },
+        //     );
+        // }, [data]);
+        
+  //  Animacion metricas del grid 
+  
+  useEffect(() => {
+    if (!data) return
 
-    useEffect(()=> {
-        if(!data) return;
-        gsap.fromTo(
-            cardRef.current,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power3.out' },
-        );
-    }, [data]);
+    // Para cada tarjeta de métricas…
+    cardRef.current.forEach(card => {
+      if (!card) return
+      const enter = () => gsap.to(card, { scale: 1.05, duration: 0.3, ease: 'power1.out' })
+      const leave = () => gsap.to(card, { scale: 1, duration: 0.3, ease: 'power1.out' })
 
+      card.addEventListener('mouseenter', enter)
+      card.addEventListener('mouseleave', leave)
+
+      // Limpieza
+      return () => {
+        card.removeEventListener('mouseenter', enter)
+        card.removeEventListener('mouseleave', leave)
+      }
+    })
+
+    // Y ahora el pronóstico semanal
+
+    weekRef.current.forEach(card => {
+      if (!card) return
+      const enter = () => gsap.to(card, { y: -5, duration: 0.2, ease: 'power1.out' })
+      const leave = () => gsap.to(card, { y: 0, duration: 0.2, ease: 'power1.out' })
+
+      card.addEventListener('mouseenter', enter)
+      card.addEventListener('mouseleave', leave)
+
+      return () => {
+        card.removeEventListener('mouseenter', enter)
+        card.removeEventListener('mouseleave', leave)
+      }
+    })
+  }, [data])
 
 // //  Animacion pronostico semanal
 
@@ -94,7 +130,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
 
         <button
           onClick={logout}
-          className="self-end mr-8 mb-4 px-4 py-2 bg-green-600 hover:bg-green-800 rounded-lg text-gray-300"
+          className="self-end mr-8 mb-4 px-2 py-2 bg-green-600 hover:bg-green-800 rounded-lg text-gray-300"
         >
           Cerrar sesión
         </button>
@@ -128,7 +164,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
 
         <button 
           onClick={logout} 
-          className='self-end mb-4 px-4 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300'
+          className='self-end mr-8 mb-4 px-2 py-2 bg-green-600 hover:bg-green-800 rounded-lg text-gray-300'
          >
           Cerrar sessión
         </button>
@@ -162,7 +198,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
          {/* Temperatura */}
           <div
             ref={el => (cardRef.current[0] = el)}
-            className='bg-gray-800 p-4 rounded-xl border border-gray-700'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
           >
             <h2 className='text-gray-400 mb-2'>Temperatura</h2>
             <p className='text-5xl text-gray-100 font-bold'>{Math.round(current.temp_c)}°C</p>
@@ -172,7 +208,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
             {/* Viento  */}
           <div
             ref={el => (cardRef.current[1] = el)}
-            className='bg-gray-800 p-4 rounded-xl border border-gray-700'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
           >
             <h2 className='text-gray-400 mb-2'>Viento</h2>
             <p className='text-4xl text-gray-100 font-bold'>{Math.round(current.wind_kph)}km/h</p>
@@ -182,7 +218,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
             {/* Presion */}
           <div
             ref={el => (cardRef.current[2] = el)}
-            className='bg-gray-800 p-4 rounded-xl border border-gray-700'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
           >
             <h2 className='text-gray-400 mb-2'>Presión</h2>
             <p className='text-4xl text-gray-100 font-bold'>{pressureBar}</p>
@@ -192,7 +228,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
           {/* Precipitaciones */}
           <div
             ref={el => (cardRef.current[3] = el)}
-            className='bg-gray-800 border border-gray-700 rounded-xl p-6'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
            >
             <h2 className='text-gray-400 mb-2'>Precipitacion</h2>
             <div className='text-5xl font-bold text-[#5e9cff]'>{current.precip_mm || 0}</div>
@@ -202,7 +238,7 @@ const Weather = ({ apiBaseUrl, token, logout }) => {
           {/* Humedad */}
           <div
             ref={el => (cardRef.current[4] = el)}
-            className='bg-gray-800 border border-gray-700 rounded-xl p-6'
+            className='bg-gray-800 rounded-xl border border-gray-700 p-6 cursor-pointer'
            >
             <h2 className='text-gray-400 mb-2'>Humedad</h2>
             <div className='text-5xl font-bold text-[#5e9cff]'>{current.humidity}</div>
