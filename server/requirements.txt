@@ -1,5 +1,0 @@
-Django==5.2.2
-djangorestframework
-django-cors-headers
-requests
-python-decouple
