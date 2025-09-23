@@ -30,7 +30,7 @@ export const login = async (req: Request, res: Response) => {
         const matchUser = await user.comparePassword(password);
         if(!matchUser) return res.status(400).json({ error: "Credenciales invalidas."});
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {expiresIn: "1d"});
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, { expiresIn: "1d"});
         res.json({ token })
 
     } catch (error) {
