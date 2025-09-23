@@ -1,8 +1,8 @@
-import { Document, Schema } from "mongoose";
+import { Document, Schema, model, Types } from "mongoose";
 import mongoose from "mongoose";
 
 export interface IHistory extends Document {
-  user: mongoose.Types.ObjectId;
+  user: Types.ObjectId;
   city: string;
   timestamp: Date;
 }

@@ -1,6 +1,6 @@
 import { Document, Schema } from "mongoose";
 import mongoose from "mongoose";
-import bycrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 
 export interface IUser extends Document {
@@ -18,8 +18,8 @@ const userSchema: Schema<IUser> = new Schema({
 userSchema.pre<IUser>('save', async function (next){
     if (!this.isModified('password')) return next();
     try {
-        const salt = await bycrypt.genSalt(10);
-        this.password = await bycrypt.hash(this.password, salt);
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
         next();
     } catch (error) {
         next(error as Error);
@@ -27,7 +27,7 @@ userSchema.pre<IUser>('save', async function (next){
 });
 
 userSchema.methods.comparePassword = async function (candidate: string): Promise<boolean> {
-    return bycrypt.compare(candidate, this.password);
+    return bcrypt.compare(candidate, this.password);
 }
 
 export default mongoose.model<IUser>("User", userSchema)

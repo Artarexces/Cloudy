@@ -38,3 +38,8 @@ export const login = async (req: Request, res: Response) => {
     }
 };
 
+
+export const logout = async (req: Request, res: Response) => {
+  // Con JWT no hay logout server-side por defecto; cliente borra token.
+  return res.json({ msg: "Sesión cerrada (borrar token en cliente)." });
+};
