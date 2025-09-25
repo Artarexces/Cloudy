@@ -2,7 +2,7 @@ import axios from "axios";
 import { Response } from "express";
 import History from "../models/History";
 import { AuthRequest } from "../middlewares/auth";
-import { OwmCurrent, OwmForecast } from "../types/weather"; // si ya tenés este archivo
+import { OwmCurrent, OwmForecast } from "../types/weather"; 
 
 export const weather = async (req: AuthRequest, res: Response) => {
   try {

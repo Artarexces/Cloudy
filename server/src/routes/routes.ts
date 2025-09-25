@@ -16,3 +16,5 @@ router.post("/register/", register);
 //Weather & forecast 
 router.get("/weather/", protect, weather);
 router.get("/history/", protect, getHistroy)
+
+export default router

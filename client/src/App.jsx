@@ -24,7 +24,7 @@ const API = import.meta.env.VITE_API_BASE_URL;
 //  Funcion de logeo manual
   const handleLogin = async ( username, password ) => {
     try {
-      const res = await fetch(`${API}/login/`, {
+      const res = await fetch(`${API}/login`, {
         method: 'POST',
         headers:{ 'Content-Type' : 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -44,7 +44,7 @@ const API = import.meta.env.VITE_API_BASE_URL;
 //  Funcion de deslogeo manual
   const handleLogout = async ( ) => {
     try {
-    await fetch(`${API}/logout/`, {
+    await fetch(`${API}/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const API = import.meta.env.VITE_API_BASE_URL;
 //  Funcion de registro manual
   const handleRegister = async (username, password) => {
     try {
-      const res = await fetch(`${API}/register/`, {
+      const res = await fetch(`${API}/register`, {
         method:'POST',
         headers: { 'Content-Type' : 'application/json'},
         body: JSON.stringify({username, password})
