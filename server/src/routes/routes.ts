@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { protect } from "../middlewares/auth";
 import { weather } from "../controllers/weatherControllers";
-import { getHistroy } from "../controllers/historyControllers";
+import { getHistory } from "../controllers/historyControllers";
 import { register, login, logout } from "../controllers/authControllers";
 
 const router = Router()
@@ -10,11 +10,10 @@ const router = Router()
 router.post("/register/", register);
 router.post("/login/", login);
 router.post("/logout/",protect, logout);
-router.post("/register/", register);
 
 
 //Weather & forecast 
 router.get("/weather/", protect, weather);
-router.get("/history/", protect, getHistroy)
+router.get("/history/", protect, getHistory)
 
 export default router

@@ -2,7 +2,7 @@ import { Response } from "express";
 import History from "../models/History";
 import { AuthRequest } from "../middlewares/auth";
 
-export const getHistroy = async (req: AuthRequest, res: Response ) => {
+export const getHistory = async (req: AuthRequest, res: Response ) => {
     try {
         if (!req.userId){
             return res.status(401).json({ error: "Usuario no autenticado."});
