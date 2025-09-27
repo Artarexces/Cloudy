@@ -6,6 +6,9 @@ const Register = ({ switchToLogin }) => {
     const[password, setPassword] = useState('');
     const formRef = useRef(null);
 
+
+    const API = import.meta.env.VITE_API_BASE_URL;
+
     useEffect(()=> {
         gsap.set(formRef.current, {opacity: 0, y: 50, duration: 1});
         gsap.to(formRef.current, {
@@ -19,7 +22,7 @@ const Register = ({ switchToLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-        const res = await fetch('http://localhost:8500/api/register',{
+        const res = await fetch(`${API}/register`.replace(/\s+/g, ''),{
             method:'POST',
             headers:{ 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
