@@ -7,7 +7,7 @@ const Register = ({ switchToLogin }) => {
     const formRef = useRef(null);
 
 
-    const API = import.meta.env.VITE_API_BASE_URL;
+    const API = import.meta.env.VITE_API_URL;
 
     useEffect(()=> {
         gsap.set(formRef.current, {opacity: 0, y: 50, duration: 1});

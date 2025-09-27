@@ -13,7 +13,7 @@ const App = () => {
 
 // META ENV 
 
-const API = import.meta.env.VITE_API_BASE_URL;
+const API = import.meta.env.VITE_API_URL;
 
 
 
