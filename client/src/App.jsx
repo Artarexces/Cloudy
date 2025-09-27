@@ -16,9 +16,6 @@ const App = () => {
 const API = import.meta.env.VITE_API_URL;
 
 
-
-
-
 //  CONTROLADORES FETCH  
 
 //  Funcion de logeo manual
